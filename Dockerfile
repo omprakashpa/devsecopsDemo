@@ -8,7 +8,7 @@ FROM node:16-buster
 
 # Working directory
 WORKDIR /app
-
+ 
 # Copy application source
 COPY app/ .
 
