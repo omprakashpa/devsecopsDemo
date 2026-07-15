@@ -16,9 +16,9 @@ COPY . .
 RUN npm install
 
 # Install additional packages (intentionally increases attack surface)
-RUN apt-get update && \
-    apt-get install -y curl vim wget && \
-    rm -rf /var/lib/apt/lists/*
+#RUN apt-get update && \
+    #apt-get install -y curl vim wget && \
+    #rm -rf /var/lib/apt/lists/*
 
 # Expose application port
 EXPOSE 3000
