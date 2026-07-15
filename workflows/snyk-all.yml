@@ -62,7 +62,7 @@ jobs:
       - name: Trivy Filesystem Scan
         uses: aquasecurity/trivy-action@master
         with:
-          scan-type: fs
+          scan-type: fs 
           scan-ref: .
           format: table
           severity: HIGH,CRITICAL
