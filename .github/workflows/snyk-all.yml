@@ -3,7 +3,7 @@ name: DevSecOps Security Pipeline
 on:
   push:
     branches:
-      - main
+      - main 
   workflow_dispatch:
 
 jobs: 
