@@ -3,29 +3,19 @@
 database.js
 Purpose:
 Demonstrates an intentionally vulnerable SQL query
-for SAST (SQL Injection) training.
-
-⚠️ DO NOT USE THIS CODE IN PRODUCTION.
+for SAST (SQL Injection) .
 ====================================================
 */
 
 // Mock database object
-const db = {
-    query: (sql, callback) => {
-        console.log("Executing Query:");
-        console.log(sql);
+const mysql = require("mysql2");
 
-        // Mock response
-        callback(null, [
-            {
-                id: 1,
-                username: "admin",
-                email: "admin@example.com"
-            }
-        ]);
-    }
-};
-
+const connection = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "password",
+    database: "demo"
+});
 /*
 ====================================================
 SQL Injection Demo
@@ -52,7 +42,7 @@ exports.getUser = (req, res) => {
     const query =
         "SELECT * FROM users WHERE id = " + userId;
 
-    db.query(query, (err, result) => {
+    connection.query(query, (err, result) => {
 
         if (err) {
             return res.status(500).json({
