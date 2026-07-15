@@ -39,22 +39,23 @@ The following scans are included:
 
 devsecops-vulnerable-demo/
 
+devsecopsDemo/
+│
 ├── .github/
-│ └── workflows/
-│ └── security-pipeline.yml
+│   └── workflows/
+│       └── snyk-all.yml
 │
 ├── app/
-│ ├── app.js
-│ ├── routes.js
-│ ├── database.js
-│ ├── auth.js
-│ ├── upload.js
-│ ├── config.js
-│ ├── package.json
-│ └── .env
+│   ├── Dockerfile      
+│   ├── package.json    
+│   ├── app.js
+│   ├── auth.js
+│   ├── database.js
+│   ├── routes.js
+│   └── ...
 │
-├── Dockerfile
 ├── .dockerignore
+├── .gitignore
 └── README.md
 
 ```
