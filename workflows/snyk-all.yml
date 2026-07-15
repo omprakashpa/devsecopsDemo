@@ -1,0 +1,52 @@
+name: Complete DevSecOps Security Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+
+  workflow_dispatch:
+
+jobs:
+
+  security:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Install Snyk CLI
+        run: npm install -g snyk
+
+      - name: Authenticate
+        run: snyk auth ${{ secrets.SNYK_TOKEN }}
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+      - name: Build Docker Image
+        run: docker build -t vulnerable-demo .
+
+      - name: Run SAST Scan
+        run: snyk code test
+
+      - name: Run SCA Scan
+        run: snyk test
+
+      - name: Run Container Image Scan
+        run: snyk container test vulnerable-demo
+
+      - name: Monitor Project
+        run: snyk monitor
