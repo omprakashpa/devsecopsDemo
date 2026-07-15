@@ -10,7 +10,7 @@ FROM node:16-buster
 WORKDIR /app
  
 # Copy application source
-COPY app/ .
+COPY . .
 
 # Install dependencies
 RUN npm install
