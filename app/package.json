@@ -1,0 +1,26 @@
+{
+  "name": "devsecops-vulnerable-demo",
+  "version": "1.0.0",
+  "description": "Vulnerable Node.js application for demonstrating SAST, SCA, Secret Scanning, and Container Image Scanning.",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "dependencies": {
+    "axios": "0.18.0",
+    "body-parser": "1.18.3",
+    "cookie-parser": "1.4.3",
+    "express": "4.16.0",
+    "jsonwebtoken": "8.3.0",
+    "lodash": "4.17.11",
+    "minimist": "0.0.8",
+    "mongoose": "5.0.0",
+    "serialize-javascript": "2.1.0",
+    "validator": "10.11.0"
+  },
+  "devDependencies": {
+    "nodemon": "2.0.22"
+  },
+  "license": "MIT"
+}
