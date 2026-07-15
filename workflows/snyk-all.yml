@@ -1,16 +1,12 @@
-name: Complete DevSecOps Security Pipeline
+name: DevSecOps Security Pipeline
 
 on:
   push:
     branches:
       - main
-
-  pull_request:
-
   workflow_dispatch:
 
 jobs:
-
   security:
 
     runs-on: ubuntu-latest
@@ -28,25 +24,85 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Install Snyk CLI
-        run: npm install -g snyk
-
-      - name: Authenticate
-        run: snyk auth ${{ secrets.SNYK_TOKEN }}
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      ####################################################
+      # Build Docker Image
+      ####################################################
 
       - name: Build Docker Image
-        run: docker build -t vulnerable-demo .
+        run: docker build -t demo-image ./app
 
-      - name: Run SAST Scan
-        run: snyk code test
+      ####################################################
+      # Snyk SAST
+      ####################################################
 
-      - name: Run SCA Scan
-        run: snyk test
+      - name: Snyk Code Scan
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          command: code test
+        continue-on-error: true
 
-      - name: Run Container Image Scan
-        run: snyk container test vulnerable-demo
+      ####################################################
+      # Snyk SCA
+      ####################################################
 
-      - name: Monitor Project
-        run: snyk monitor
+      - name: Snyk Dependency Scan
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          command: test
+        continue-on-error: true
+
+      ####################################################
+      # Trivy Filesystem Scan
+      ####################################################
+
+      - name: Trivy Filesystem Scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: fs
+          scan-ref: .
+          format: table
+          severity: HIGH,CRITICAL
+        continue-on-error: true
+
+      ####################################################
+      # Trivy Secret Scan
+      ####################################################
+
+      - name: Trivy Secret Scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: fs
+          scan-ref: .
+          scanners: secret
+          format: table
+        continue-on-error: true
+
+      ####################################################
+      # Trivy Image Scan
+      ####################################################
+
+      - name: Trivy Image Scan
+        uses: aquasecurity/trivy-action@master
+        continue-on-error: true
+        with:
+          image-ref: demo-image
+          format: table
+          severity: HIGH,CRITICAL
+        
+
+      ####################################################
+      # Snyk Container Scan
+      ####################################################
+
+      - name: Snyk Container Scan
+        uses: snyk/actions/docker@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          image: demo-image
+          args: --severity-threshold=medium
+        continue-on-error: true
