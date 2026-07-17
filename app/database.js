@@ -16,21 +16,20 @@ const connection = mysql.createConnection({
     password: "password",
     database: "demo"
 });
-/*
+
 ====================================================
-SQL Injection Demo
+//Reachability Code
 
-Example:
-http://localhost:3000/user?id=1
+router.get("/fetch", async (req, res) => {
 
-Malicious Example:
-http://localhost:3000/user?id=1 OR 1=1
+    const url = req.query.url;
 
-Reason:
-User input is concatenated directly into the SQL query.
+    const response = await axios.get(url);
 
-Expected SAST Finding:
-SQL Injection
+    res.send(response.data);
+
+});
+/*
 ====================================================
 */
 
