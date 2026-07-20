@@ -3,7 +3,7 @@
 
 ####################################################
 
-# Older base image 
+# Older base image Sets up the starting environment OS.
 FROM node:16-buster
 
 # Working directory
@@ -20,7 +20,7 @@ RUN npm install
     #apt-get install -y curl vim wget && \
     #rm -rf /var/lib/apt/lists/*
 
-# Expose application port
+# Expose application port gateway
 EXPOSE 3000
 
 
