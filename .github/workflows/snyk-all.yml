@@ -12,7 +12,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
+    
+# downloads your project's code into the virtual machine so the pipeline can work with it.
       - name: Checkout Repository
         uses: actions/checkout@v4
 
