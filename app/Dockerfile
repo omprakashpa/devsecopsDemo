@@ -3,7 +3,7 @@
 
 ####################################################
 
-# Older base image (training/demo only)
+# Older base image 
 FROM node:16-buster
 
 # Working directory
@@ -15,7 +15,7 @@ COPY . .
 # Install dependencies
 RUN npm install
 
-# Install additional packages (intentionally increases attack surface)
+# Install additional packages
 #RUN apt-get update && \
     #apt-get install -y curl vim wget && \
     #rm -rf /var/lib/apt/lists/*
