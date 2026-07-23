@@ -38,10 +38,11 @@ exports.getUser = (req, res) => {
     const userId = req.query.id;
 
     // ❌ Intentionally vulnerable query
-    const query =
-        "SELECT * FROM users WHERE id = " + userId;
+    const sql = "SELECT * FROM users WHERE id = '" + id + "'";
 
-    connection.query(query, (err, result) => {
+   console.log("Executing Query:", sql);
+
+    connection.query(sql, function (err, results) {
 
         if (err) {
             return res.status(500).json({
@@ -49,10 +50,9 @@ exports.getUser = (req, res) => {
             });
         }
 
-        res.json({
-            message: "SQL Query Executed",
-            executedQuery: query,
-            data: result
+        return res.json({
+            query: sql,
+            results: results
         });
 
     });
