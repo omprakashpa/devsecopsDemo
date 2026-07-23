@@ -21,9 +21,7 @@ Example:
 http://localhost:3000/user?id=1
 ====================================================
 */
-router.get("/user", (req, res) => {
-    database.getUser(req, res);
-});
+router.get("/user", database.getUser);
 
 /*
 ====================================================
