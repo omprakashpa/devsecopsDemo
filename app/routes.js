@@ -4,6 +4,7 @@ const router = express.Router();
 const database = require("./database");
 const auth = require("./auth");
 const upload = require("./upload");
+const axios = require("axios");
 
 /*
 ====================================================
@@ -99,3 +100,16 @@ router.get("/health", (req, res) => {
 });
 
 module.exports = router;
+
+====================================================
+Reachability
+====================================================
+router.get("/fetch", async (req, res) => {
+
+    const url = req.query.url;
+
+    const response = await axios.get(url);
+
+    res.send(response.data);
+
+});
