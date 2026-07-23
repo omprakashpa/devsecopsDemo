@@ -67,17 +67,19 @@ jobs:
       - name: Trivy Filesystem Scan
         uses: aquasecurity/trivy-action@master
         with:
-          scan-type: fs 
-          scan-ref: .
-          format: sarif
-          output: trivy-fs.sarif
-          severity: HIGH,CRITICAL
+              scan-type: fs
+              scan-ref: .
+              format: sarif
+              output: trivy-fs.sarif
+              severity: HIGH,CRITICAL
         continue-on-error: true
+
       - name: Upload Trivy Filesystem Results
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: trivy-fs.sarif
-
+          category: trivy-fs
+          
       ####################################################
       # Trivy Secret Scan
       ####################################################
@@ -85,34 +87,38 @@ jobs:
       - name: Trivy Secret Scan
         uses: aquasecurity/trivy-action@master
         with:
-          scan-type: fs
-          scan-ref: .
-          scanners: secret
-          format: sarif
-          output: trivy-sc.sarif
-        continue-on-error: true
-      - name: Upload Trivy Filesystem Results
+              scan-type: fs
+              scan-ref: .
+              scanners: secret
+              format: sarif
+              output: trivy-secret.sarif
+              continue-on-error: true
+
+      - name: Upload Trivy Secret Results
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: trivy-sc.sarif
+              sarif_file: trivy-secret.sarif
+              category: trivy-secret
 
       ####################################################
-      # Trivy Image Scan
+        # Trivy Image Scan
       ####################################################
 
       - name: Trivy Image Scan
         uses: aquasecurity/trivy-action@master
-        continue-on-error: true
         with:
-          image-ref: demo-image
-          format: sarif
-          output: trivy-is.sarif
-          severity: HIGH,CRITICAL
-      - name: Upload Trivy Filesystem Results
+                    image-ref: demo-image
+                    format: sarif
+                    output: trivy-image.sarif
+                    severity: HIGH,CRITICAL
+                    continue-on-error: true
+
+      - name: Upload Trivy Image Results
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: trivy-is.sarif
-          
+              sarif_file: trivy-image.sarif
+              category: trivy-image
+            
       ####################################################
       # Snyk Container Scan
       ####################################################
