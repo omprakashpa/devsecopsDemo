@@ -10,6 +10,9 @@ jobs:
   security:
   
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
 
     steps:
     
@@ -66,9 +69,14 @@ jobs:
         with:
           scan-type: fs 
           scan-ref: .
-          format: table
+          format: sarif
+          output: trivy-fs.sarif
           severity: HIGH,CRITICAL
         continue-on-error: true
+      - name: Upload Trivy Filesystem Results
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: trivy-fs.sarif
 
       ####################################################
       # Trivy Secret Scan
@@ -80,8 +88,13 @@ jobs:
           scan-type: fs
           scan-ref: .
           scanners: secret
-          format: table
+          format: sarif
+          output: trivy-sc.sarif
         continue-on-error: true
+      - name: Upload Trivy Filesystem Results
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: trivy-sc.sarif
 
       ####################################################
       # Trivy Image Scan
@@ -92,10 +105,14 @@ jobs:
         continue-on-error: true
         with:
           image-ref: demo-image
-          format: table
+          format: sarif
+          output: trivy-is.sarif
           severity: HIGH,CRITICAL
-        
-
+      - name: Upload Trivy Filesystem Results
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: trivy-is.sarif
+          
       ####################################################
       # Snyk Container Scan
       ####################################################
